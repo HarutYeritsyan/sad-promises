@@ -1,0 +1,11 @@
+{
+  "name": "sad-promises",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "actividad_1": "node actividad_1.js"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
