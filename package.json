@@ -6,6 +6,7 @@
     "actividad_1": "node actividad_1.js"
   },
   "devDependencies": {
+    "mongodb": "^3.1.10",
     "nodemon": "^1.18.9"
   }
 }
