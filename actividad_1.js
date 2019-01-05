@@ -24,7 +24,7 @@ function processEntry(name, cb) {
 
 function test() {
 
-    for (var n in testNames) {
+    for (var n of testNames) {
         console.log('processing ', n);
         processEntry(n, function (res) {
             console.log('processed ', n);
