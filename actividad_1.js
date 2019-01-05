@@ -17,30 +17,30 @@ function retrieve(file, name, cb) {
     }, 0);
 }
 
-function processEntry(name, cb) {
-
-    if (rolodex[name]) {
-        // callback is called synchronously
-        cb(rolodex[name]);
-    }
-    else {
-        // callback function will be called asynchronously by retrieve()
-        retrieve(rolodexFile, name, function (val) {
-            rolodex[name] = val;
-            cb(val);
-        });
-    }
+function processEntry(name) {
+    // any path inside the promise is asynchronous
+    return new Promise(function(resolve) {
+        if (rolodex[name]) {
+            resolve(rolodex[name]);
+        }
+        else {
+            retrieve(rolodexFile, name, function (val) {
+                rolodex[name] = val;
+                resolve(val);
+            });
+        }
+    });
 }
 
 function test() {
 
-    for (var n of testNames) {
-        console.log('processing ', n);
-        processEntry(n, function (res) {
-            console.log('processed ', n);
-        })
-
-    }
+    testNames.forEach(function (name) {
+        console.log('processing ', name);
+        // processEntry is always asynchronous
+        processEntry(name).then(function (res) {
+            console.log('processed ', name);
+        });
+    });
 }
 
 var testNames = ['a', 'b', 'c'];
