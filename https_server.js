@@ -10,11 +10,15 @@ var updateItemList = function () {
     });
 }
 
-updateItemList().then(function () {
-    console.log('initial items: ', itemList);
-    cart.addItemToCart({ cod: 999, desc: 'prueba-item' }).then(function () {
-        updateItemList().then(console.log('updated items: ', itemList));
-    }).catch(function (err) {
-        console.log('Could not add item to cart: ', err);
-    })
+cart.initialize().then(function () {
+    updateItemList().then(function () {
+        console.log('initial items: ', itemList);
+        cart.addItemToCart({ cod: 999, desc: 'prueba-item' }).then(function () {
+            updateItemList().then(console.log('updated items: ', itemList));
+        }).catch(function (err) {
+            console.log('Could not add item to cart: ', err);
+        });
+    });
+}).catch(function (err) {
+    console.log('Could not initialize cart: ', err);
 });

@@ -8,18 +8,21 @@ var defaultUrl = 'mongodb://test:abc123@ds141368.mlab.com:41368/sad-promises';
 
 var db;
 
-exports.connect = function (url, callback) {
-  var dbUrl = defaultUrl;
-  if (url != null) {
-    dbUrl = url;
-  }
-  mongoclient.connect(dbUrl, function (err, client) {
-    assert.equal(err, null);
-    console.log('conectado');
+exports.connect = function (url) {
+  return new Promise(function (resolve, reject) {
+    var dbUrl = defaultUrl;
+    if (url != null) {
+      dbUrl = url;
+    }
 
-    db = client.db('sad-promises');
+    mongoclient.connect(dbUrl, function (err, client) {
+      if (err) { reject(err) };
+      assert.equal(err, null);
 
-    callback();
+      console.log('conectado');
+      db = client.db('sad-promises');
+      resolve();
+    });
   });
 }
 
