@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "https_server": "node https_server.js",
     "actividad_1": "node actividad_1.js",
     "actividad_2": "node Cliente_mongo.js"
   },
