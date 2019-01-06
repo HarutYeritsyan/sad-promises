@@ -18,9 +18,7 @@ exports.getItems = function () {
 
 exports.addItemToCart = function (item) {
     return new Promise(function (resolve) {
-        /*
-        dbClient.checkProductHasStock(item.code).then(function (hasStock) {
-            console.log('product has stock: ', hasStock);
+        dbClient.checkProductHasStock(item.cod).then(function (hasStock) {
             if (hasStock) {
                 shoppingCart.push(item);
             } else {
@@ -28,15 +26,12 @@ exports.addItemToCart = function (item) {
             }
             resolve();
         });
-        */
-        shoppingCart.push(item);
-        resolve();
     });
 }
 
-exports.removeItemFromCartById = function (itemId) {
+exports.removeItemFromCartById = function (itemCode) {
     return new Promise(function (resolve, reject) {
-        itemIndex = shoppingCart.findIndex(item => item.code == itemId);
+        itemIndex = shoppingCart.findIndex(item => item.code == itemCode);
         if (itemIndex > -1) {
             shoppingCart.splice(itemIndex, 1);
             resolve();
