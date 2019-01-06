@@ -75,8 +75,11 @@ exports.checkProductHasStock = function (productId) {
     var collection = db.collection('products');
     collection.find({ cod: productId }).toArray(function (err, product) {
       if (err) throw err;
-      console.log(product);
-      resolve(product);
+      if (product && product.length) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
     });
   });
 }
