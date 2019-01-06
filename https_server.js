@@ -21,7 +21,11 @@ cart.initialize().then(function () {
 
 var testCart = function () {
     cart.addItemToCart({ cod: 999, desc: 'prueba-item' }).then(function () {
-        updateItemList();
+        updateItemList().then(function () {
+            cart.finalize().then(function () {
+                console.log('testCart finished');
+            });
+        });
     }).catch(function (err) {
         console.log('Could not add item to cart: ', err);
     });
