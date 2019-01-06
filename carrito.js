@@ -18,13 +18,17 @@ exports.getItems = function () {
 
 exports.addItemToCart = function (itemCode) {
     return new Promise(function (resolve) {
-        dbClient.getProductById(itemCode).then(function (product) {
-            if (product) {
-                shoppingCart.push(product);
+        dbClient.checkProductHasStockById(itemCode).then(function (hasStock) {
+            if (hasStock) {
+                // separated functions for checking for stock and retrieving data for product
+                dbClient.getProductById(itemCode).then(function (product) {
+                    shoppingCart.push(product);
+                    resolve();
+                });
             } else {
                 console.log('ERROR: No stock for ', itemCode);
+                resolve();
             }
-            resolve();
         });
     });
 }

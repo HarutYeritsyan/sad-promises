@@ -83,3 +83,20 @@ exports.getProductById = function (productId) {
     });
   });
 }
+
+exports.checkProductHasStockById = function (productId) {
+  return new Promise(function (resolve, reject) {
+    if (!db) reject('DB is NOT connected');
+
+    var collection = db.collection('products');
+    collection.find({ cod: productId }).toArray(function (err, product) {
+      if (err) throw err;
+      if (product && product.length) {
+        resolve(true);
+      } else {
+        console.log('ERROR: Product ', productId, ' has no stock');
+        resolve(false);
+      }
+    });
+  });
+}
