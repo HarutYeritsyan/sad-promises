@@ -1,19 +1,19 @@
 var shoppingCart = [];
 
-exports.getCart = function () {
-    return new Promise(function () {
-        return shoppingCart;
+exports.getItems = function () {
+    return new Promise(function (resolve) {
+        resolve(shoppingCart);
     });
 }
 
-exports.addToCart = function (item) {
+exports.addItemToCart = function (item) {
     return new Promise(function (resolve) {
         shoppingCart.push(item);
         resolve();
     });
 }
 
-exports.removeFromCart = function (itemId) {
+exports.removeItemFromCartById = function (itemId) {
     return new Promise(function (resolve, reject) {
         itemIndex = shoppingCart.findIndex(item => item.id == itemId);
         if (itemIndex > -1) {
