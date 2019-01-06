@@ -2,6 +2,8 @@ var cart = require('./carrito.js');
 
 var itemList = [];
 
+var ITEM_CODE_EXAMPLE = 1;
+
 var updateItemList = function () {
     return cart.getItems().then(function (items) {
         itemList = items;
@@ -20,14 +22,28 @@ cart.initialize().then(function () {
 });
 
 var testCart = function () {
-    cart.addItemToCart({ cod: 1, desc: 'prueba-item' }).then(function () {
+    // using itemCode for a master/detail setup
+    cart.addItemToCart(ITEM_CODE_EXAMPLE).then(function () {
         updateItemList().then(function () {
-            cart.finalize().then(function () {
-                console.log('updated items: ', itemList);
-                console.log('testCart finished');
+            console.log('added an item: ', itemList);
+            cart.removeItemFromCartById(ITEM_CODE_EXAMPLE).then(function () {
+                updateItemList().then(function () {
+                    console.log('removed an item: ', itemList);
+                    closeCart();
+                });
+            }).catch(function (err) {
+                console.log(err);
+                closeCart();
             });
         });
     }).catch(function (err) {
         console.log('Could not add item to cart: ', err);
+        closeCart();
+    });
+}
+
+var closeCart = function () {
+    cart.finalize().then(function () {
+        console.log('testCart finished');
     });
 }

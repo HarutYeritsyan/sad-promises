@@ -16,13 +16,13 @@ exports.getItems = function () {
     });
 }
 
-exports.addItemToCart = function (item) {
+exports.addItemToCart = function (itemCode) {
     return new Promise(function (resolve) {
-        dbClient.getProductById(item.cod).then(function (product) {
+        dbClient.getProductById(itemCode).then(function (product) {
             if (product) {
                 shoppingCart.push(product);
             } else {
-                console.log('ERROR: No stock for ', item.desc);
+                console.log('ERROR: No stock for ', itemCode);
             }
             resolve();
         });
@@ -31,7 +31,7 @@ exports.addItemToCart = function (item) {
 
 exports.removeItemFromCartById = function (itemCode) {
     return new Promise(function (resolve, reject) {
-        itemIndex = shoppingCart.findIndex(item => item.code == itemCode);
+        itemIndex = shoppingCart.findIndex(item => item.cod == itemCode);
         if (itemIndex > -1) {
             shoppingCart.splice(itemIndex, 1);
             resolve();
