@@ -2,8 +2,8 @@ var dbClient = require('./Cliente_mongo');
 
 var shoppingCart = [];
 
-exports.initialize = function () {
-    return dbClient.connect();
+exports.initialize = function (url) {
+    return dbClient.connect(url);
 }
 
 exports.finalize = function () {
@@ -18,9 +18,9 @@ exports.getItems = function () {
 
 exports.addItemToCart = function (item) {
     return new Promise(function (resolve) {
-        dbClient.checkProductHasStock(item.cod).then(function (hasStock) {
-            if (hasStock) {
-                shoppingCart.push(item);
+        dbClient.getProductById(item.cod).then(function (product) {
+            if (product) {
+                shoppingCart.push(product);
             } else {
                 console.log('ERROR: No stock for ', item.desc);
             }

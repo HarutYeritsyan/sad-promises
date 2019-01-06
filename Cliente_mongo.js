@@ -20,7 +20,7 @@ exports.connect = function (url) {
       if (err) reject(err);
       assert.equal(err, null);
 
-      console.log('conectado');
+      console.log('connected');
       connection = client;
       db = client.db('sad-promises');
       resolve();
@@ -68,7 +68,7 @@ exports.getProducts = function () {
   });
 }
 
-exports.checkProductHasStock = function (productId) {
+exports.getProductById = function (productId) {
   return new Promise(function (resolve, reject) {
     if (!db) reject('DB is NOT connected');
 
@@ -76,9 +76,9 @@ exports.checkProductHasStock = function (productId) {
     collection.find({ cod: productId }).toArray(function (err, product) {
       if (err) throw err;
       if (product && product.length) {
-        resolve(true);
+        resolve(product[0]);
       } else {
-        resolve(false);
+        resolve(null);
       }
     });
   });
