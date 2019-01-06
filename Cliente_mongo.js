@@ -4,35 +4,35 @@ var assert = require('assert');
 
 var mongoclient = mgdb.MongoClient;
 
-var url = 'mongodb://test:abc123@ds141368.mlab.com:41368/sad-promises'
+var defaultUrl = 'mongodb://test:abc123@ds141368.mlab.com:41368/sad-promises';
 
-mongoclient.connect(url, function (err, client) {
-  assert.equal(err, null);
-  console.log('conectado');
+var db;
 
-  var db = client.db('sad-promises');
+exports.connect = function (url, callback) {
+  var dbUrl = defaultUrl;
+  if (url != null) {
+    dbUrl = url;
+  }
+  mongoclient.connect(dbUrl, function (err, client) {
+    assert.equal(err, null);
+    console.log('conectado');
 
-  /*
-  db.createCollection("documents", function (err, res) {
-    if (err) throw err;
-    console.log("Collection created!");
-    insertDocuments(db, function () {
-      if (err) throw err;
-      console.log('success with insertion!');
-      client.close();
-    });
+    db = client.db('sad-promises');
+
+    callback();
   });
-  */
+}
 
-  getDocuments(db, function (documents) {
-    console.log(documents);
-    client.close();
-  });
-});
+exports.disconnect = function (callback) {
+  if (db) {
+    db.close();
+  }
+  callback();
+}
 
+var insertDocuments = function (callback) {
+  if (!db) throw 'DB is NOT connected';
 
-
-var insertDocuments = function (db, callback) {
   // Get the documents collection
   var collection = db.collection('products');
   // Insert some documents
@@ -47,10 +47,23 @@ var insertDocuments = function (db, callback) {
   });
 }
 
-var getDocuments = function (db, callback) {
+exports.getProducts = function (callback) {
+  if (!db) throw 'DB is NOT connected';
+
   var collection = db.collection('products');
   collection.find({ stock: { $gte: 5 } }).toArray(function (err, docs) {
     if (err) throw err;
     callback(docs);
+  });
+}
+
+exports.checkProductStock = function (productId, callback) {
+  if (!db) throw 'DB is NOT connected';
+
+  var collection = db.collection('products');
+  collection.findOne({ cod: productId }).toArray(function (err, product) {
+    if (err) throw err;
+    console.log(product);
+    callback(product);
   });
 }
