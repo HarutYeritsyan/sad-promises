@@ -8,6 +8,6 @@
     "https_server": "node https_server.js"
   },
   "dependencies": {
-    "mongodb": "^3.1.10"
+    "mongodb": "2.2.33"
   }
 }

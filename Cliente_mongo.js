@@ -1,4 +1,4 @@
-var mongo = require('./connect_mongo_V3.js');
+var mongo = require('./connect_mongo_V2.js');
 var assert = require('assert');
 
 var defaultUrl = 'mongodb://test:abc123@ds141368.mlab.com:41368/sad-promises';
