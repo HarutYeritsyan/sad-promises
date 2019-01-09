@@ -1,40 +1,19 @@
-
-var mgdb = require('mongodb');
+var mongo = require('./connect_mongo_V3.js');
 var assert = require('assert');
-
-var mongoClient = mgdb.MongoClient;
 
 var defaultUrl = 'mongodb://test:abc123@ds141368.mlab.com:41368/sad-promises';
 
-var connection;
 var db;
 
 exports.connect = function (url) {
-  return new Promise(function (resolve, reject) {
-    var dbUrl = defaultUrl;
-    if (url != null) {
-      dbUrl = url;
-    }
-
-    mongoClient.connect(dbUrl, function (err, client) {
-      if (err) reject(err);
-      assert.equal(err, null);
-
-      console.log('connected');
-      connection = client;
-      db = client.db('sad-promises');
-      resolve();
-    });
+  var dbUrl = url ? url : defaultUrl;
+  return mongo.connect(dbUrl).then(function (database) {
+    db = database;
   });
 }
 
 exports.disconnect = function () {
-  return new Promise(function (resolve) {
-    if (connection) {
-      connection.close();
-    }
-    resolve();
-  });
+  return mongo.disconnect();
 }
 
 var insertDocuments = function () {
