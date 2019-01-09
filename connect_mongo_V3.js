@@ -1,3 +1,4 @@
+// Use with mongodb V3
 var mgdb = require('mongodb');
 var assert = require('assert');
 
